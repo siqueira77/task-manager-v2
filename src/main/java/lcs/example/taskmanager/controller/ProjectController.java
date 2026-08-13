@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import lcs.example.taskmanager.model.Project;
 import lcs.example.taskmanager.service.ProjectService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("api/projects")
+@CrossOrigin(origins = "*")
 public class ProjectController {
 
     private final ProjectService projectService;

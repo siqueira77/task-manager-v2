@@ -1,24 +1,30 @@
 package lcs.example.taskmanager.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import lcs.example.taskmanager.model.Task;
-import lcs.example.taskmanager.service.TaskService;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+import lcs.example.taskmanager.dto.TaskRequestDTO;
+import lcs.example.taskmanager.dto.TaskResponseDTO;
+import lcs.example.taskmanager.model.Task;
+import lcs.example.taskmanager.service.TaskService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("api/tasks")
+@CrossOrigin(origins = "*")
 public class TaskController {
+    
     private final TaskService taskService;
 
     public TaskController(TaskService taskService){
@@ -26,7 +32,7 @@ public class TaskController {
     }
     
     @GetMapping
-    public List<Task> listTasks(){
+    public List<TaskResponseDTO> listTasks(){ // <-- CORRIGIDO AQUI PARA TaskResponseDTO
         return taskService.listTasks();
     }
 
@@ -37,8 +43,8 @@ public class TaskController {
     }
     
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task savedTask = taskService.saveTask(task);
+    public ResponseEntity<TaskResponseDTO> createTask(@Valid @RequestBody TaskRequestDTO taskData) {
+        TaskResponseDTO savedTask = taskService.createTask(taskData);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
     }
 

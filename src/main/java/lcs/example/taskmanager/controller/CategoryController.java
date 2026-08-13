@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import lcs.example.taskmanager.model.Category;
 import lcs.example.taskmanager.service.CategoryService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@RequestMapping("api/categories") 
+@RequestMapping("api/categories")
+@CrossOrigin(origins = "*") 
 public class CategoryController {
 
     private final CategoryService categoryService;

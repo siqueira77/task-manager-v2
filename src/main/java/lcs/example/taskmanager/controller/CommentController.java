@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import lcs.example.taskmanager.model.Comment;
 import lcs.example.taskmanager.service.CommentService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("api/comments")
+@CrossOrigin(origins = "*")
 public class CommentController {
 
     private final CommentService commentService;
