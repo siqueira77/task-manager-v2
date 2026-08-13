@@ -30,8 +30,8 @@ A maior vantagem desta atualização é a facilidade de execução. Você não p
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/SEU_USUARIO/NOME_DO_REPOSITORIO.git
-   cd NOME_DO_REPOSITORIO
+   git clone https://github.com/siqueira77/task-manager-v2.git
+   cd task-manager-v2
    ```
 
 2. **Inicie a aplicação com o Docker:**
