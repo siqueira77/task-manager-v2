@@ -4,12 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record TaskRequestDTO(
-    
+public record ProjectRequestDTO(
+
     @NotBlank(message = "O título é obrigatório e não pode estar em branco")
     @Size(min = 3, message = "O título deve ter pelo menos 3 caracteres")
     String title,
       
-    @NotNull(message = "Você deve informar a qual projeto esta tarefa pertence")
-    Long projectId
-) {}
+    @NotNull(message = "Você deve informar a qual categoria esse projeto pertence")
+    Long categoryId
+) {} 
+

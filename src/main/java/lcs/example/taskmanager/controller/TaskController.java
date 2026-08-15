@@ -53,7 +53,6 @@ public class TaskController {
         Task task = taskService.findId(id); 
         
         task.setTitle(taskData.getTitle());
-        task.setDescription(taskData.getDescription());
         task.setCompleted(taskData.isCompleted());
         
         Task updatedTask = taskService.saveTask(task);

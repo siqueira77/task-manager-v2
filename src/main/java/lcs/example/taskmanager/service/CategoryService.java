@@ -2,6 +2,7 @@ package lcs.example.taskmanager.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import lcs.example.taskmanager.exceptions.DataConflict;
 import lcs.example.taskmanager.exceptions.NotFound;
 import lcs.example.taskmanager.model.Category;
 import lcs.example.taskmanager.repository.CategoryRepository;
@@ -29,9 +30,15 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new NotFound("Category with ID " + id + " not found.");
+        Category category = findId(id);
+
+        if (!category.getProjects().isEmpty()) {
+            throw new DataConflict(
+                "Category with ID " + id + " has " + category.getProjects().size()
+                + " project(s) linked to it. Remove or reassign them before deleting the category."
+            );
         }
+
         categoryRepository.deleteById(id);
     }
 }

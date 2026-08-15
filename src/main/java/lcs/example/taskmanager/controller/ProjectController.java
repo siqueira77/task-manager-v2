@@ -42,7 +42,6 @@ public class ProjectController {
         Project project = projectService.findId(id);
         
         project.setName(projectData.getName());
-        project.setDescription(projectData.getDescription());
         project.setCategory(projectData.getCategory()); 
         
         Project updatedProject = projectService.saveProject(project);

@@ -42,7 +42,7 @@ public class CommentController {
         Comment comment = commentService.findId(id);
         
         comment.setText(commentData.getText());
-        comment.setProject(commentData.getProject()); 
+        comment.setTask(commentData.getTask()); 
         
         Comment updatedComment = commentService.saveComment(comment);
         return ResponseEntity.ok(updatedComment);

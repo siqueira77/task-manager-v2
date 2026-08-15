@@ -21,6 +21,16 @@ public class GlobalExeceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DataConflict.class)
+    public ResponseEntity<Object> handleDataConflict(DataConflict e){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("error", "Conflict");
+        body.put("message", e.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class) 
     public ResponseEntity<Object> handleGenericException(Exception e){
         Map<String, Object> body = new LinkedHashMap<>();

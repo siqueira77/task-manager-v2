@@ -13,8 +13,8 @@ public class Comment {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
+    @JoinColumn(name = "tasks_id")
+    private Task task;
 
     public Long getId() { 
         return id; 
@@ -30,10 +30,10 @@ public class Comment {
         this.text = text; 
     }
 
-    public Project getProject() { 
-        return project; 
+    public Task getTask() { 
+        return task; 
     }
-    public void setProject(Project project) { 
-        this.project = project; 
+    public void setTask(Task task) { 
+        this.task = task; 
     }
 }

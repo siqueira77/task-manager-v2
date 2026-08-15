@@ -14,13 +14,12 @@ public class Project {
     private Long id;
 
     private String name;
-    private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonIgnore 
     private List<Task> tasks = new ArrayList<>();
 
@@ -36,13 +35,6 @@ public class Project {
     }
     public void setName(String name) { 
         this.name = name; 
-    }
-
-    public String getDescription() { 
-        return description; 
-    }
-    public void setDescription(String description) { 
-        this.description = description; 
     }
 
     public List<Task> getTasks() { 

@@ -15,7 +15,7 @@ public class Category {
 
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonIgnore 
     private List<Project> projects = new ArrayList<>();
 

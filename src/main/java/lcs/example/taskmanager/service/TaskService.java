@@ -29,7 +29,6 @@ public class TaskService {
         return new TaskResponseDTO(
             task.getId(),
             task.getTitle(),
-            task.getDescription(),
             task.isCompleted(),
             task.getProject() != null ? task.getProject().getName() : "Sem projeto"
         );
@@ -51,7 +50,6 @@ public class TaskService {
         // 2. Monta a nova tarefa (Entidade)
         Task task = new Task();
         task.setTitle(data.title());
-        task.setDescription(data.description());
         task.setCompleted(false); // Nova tarefa sempre começa falsa
         task.setProject(project); // Amarra a tarefa ao projeto
 
