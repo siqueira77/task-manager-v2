@@ -23,6 +23,18 @@ public class Project {
     @JsonIgnore 
     private List<Task> tasks = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnore
+    private User owner;
+
+    public User getOwner() {
+        return owner;
+    }
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public Long getId() { 
         return id; 
     }

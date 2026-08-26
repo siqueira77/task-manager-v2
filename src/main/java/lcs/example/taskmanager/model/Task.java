@@ -23,6 +23,17 @@ public class Task {
     private String title;
     private boolean completed;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
+
+    public User getOwner() {
+        return owner;
+    }
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public boolean isCompleted() {
         return completed;
     }
