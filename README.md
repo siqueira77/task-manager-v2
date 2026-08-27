@@ -1,96 +1,122 @@
-# 📋 Task Manager API
+📋 Task Manager API (Secure Edition)
 
-> 🚧 **Status:** Em desenvolvimento (Refatoração e Atualização)
+Status: Estável (Com Autenticação JWT e Multi-tenancy)
 
-## 📖 Sobre o Projeto
-Este projeto é uma API RESTful para gerenciamento de tarefas (Task Manager). Ele é a atualização e refatoração de um projeto que desenvolvi no passado, agora trazendo melhores práticas, código mais limpo e infraestrutura modernizada utilizando Docker.
+📖 Sobre o Projeto
 
-O objetivo principal desta versão é demonstrar a evolução técnica e facilitar a execução em qualquer ambiente, sem a necessidade de configurações complexas.
+Este projeto é uma API RESTful completa para gerenciamento de tarefas. Construída com arquitetura moderna, ela não apenas realiza o CRUD de entidades, mas também garante isolamento total de dados por usuário. Cada usuário cadastrado possui seu próprio ambiente seguro, gerenciando apenas os projetos e tarefas que lhe pertencem.
 
-## 🚀 Tecnologias Utilizadas
-* **Linguagem:** Java 17
-* **Framework:** Spring Boot
-* **Banco de Dados:** PostgreSQL
-* **Infraestrutura:** Docker e Docker Compose
-* **Gerenciador de Dependências:** Maven
+🚀 Tecnologias Utilizadas
 
-## ✨ Funcionalidades
-**Implementadas (Até o momento):**
-- [x] CRUD de Tarefas (Tasks)
-- [x] CRUD de Projetos (Projects)
-- [x] CRUD de Categorias (Categories)
-- [x] CRUD de Comentários (Comments)
-- [x] Tratamento global de exceções contra exclusão acidental (Global Exception Handler)
-- [x] Padrão DTO com validações rigorosas nas requisições
-- [x] Containerização com Docker (Aplicação + Banco de Dados)
+Linguagem: Java 17
 
-## 🛠️ Como Executar
-A maior vantagem desta atualização é a facilidade de execução. Você não precisa ter o Java, Maven ou PostgreSQL instalados na sua máquina. Apenas o **Docker** e o **Docker Compose** são necessários.
+Framework: Spring Boot 3
 
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/siqueira77/task-manager-v2.git
-   cd task-manager-v2
-   ```
+Segurança: Spring Security & JWT (JSON Web Tokens)
 
-2. **Inicie a aplicação com o Docker:**
-   ```bash
-   docker-compose up --build
-   ```
+Banco de Dados: PostgreSQL
 
-3. **Acesse a API:**
-   A aplicação estará rodando na porta `8080`.
+Infraestrutura: Docker e Docker Compose
 
-## 🧪 Como Testar as Funcionalidades
-Você pode utilizar ferramentas como Postman, Insomnia ou até mesmo o cURL no terminal para realizar as requisições. A URL base é `http://localhost:8080/api`.
+✨ Funcionalidades
 
-Como as entidades possuem relacionamentos e validações, siga a ordem abaixo para testar o fluxo completo de criação de forma correta:
+Segurança Avançada: Cadastro e Autenticação de usuários gerando tokens JWT válidos por 24 horas.
 
-### 1. Criar uma Categoria
-**POST** `http://localhost:8080/api/categories`
-```json
+Isolamento de Dados (Multi-tenancy): Usuários acessam e modificam exclusivamente seus próprios dados.
+
+Gerenciamento Completo: CRUD completo para Categorias, Projetos e Tarefas.
+
+Validações Rigorosas: Uso do padrão DTO (Data Transfer Object) para validar as entradas do usuário (ex: senhas fortes obrigatórias).
+
+Tratamento de Erros: Global Exception Handler para respostas padronizadas em caso de conflitos de dados, itens não encontrados ou requisições inválidas.
+
+🛠️ Como Executar
+
+A aplicação está totalmente containerizada. Você só precisa do Docker e do Docker Compose.
+
+Clone o repositório:
+
+git clone https://github.com/siqueira77/task-manager-v2.git
+cd task-manager-v2
+
+
+Inicie a aplicação e o banco de dados:
+
+docker-compose up --build
+
+
+A API estará disponível em http://localhost:8080.
+
+🧪 Como Testar e Usar a API
+
+Todas as rotas do sistema (exceto a criação de conta e login) estão bloqueadas e exigem um Token JWT. Siga o fluxo abaixo:
+
+1. Criar uma Conta (Registro)
+
+POST /auth/register
+(A senha deve conter pelo menos 6 caracteres, 1 número e 1 caractere especial).
+
 {
-  "name": "Trabalho"
+  "username": "lucas.siqueira",
+  "password": "Password@123"
 }
-```
 
-### 2. Criar um Projeto (Vinculado à Categoria ID 1)
-**POST** `http://localhost:8080/api/projects`
-```json
+
+2. Fazer Login para obter o Token
+
+POST /auth/login
+
 {
-  "title": "Desenvolver API",
+  "username": "lucas.siqueira",
+  "password": "Password@123"
+}
+
+
+Guarde o token retornado na resposta desta requisição.
+
+3. Acessar Rotas Protegidas
+
+Para criar categorias, projetos ou tarefas, você deve adicionar o token recebido no Header (Cabeçalho) de todas as requisições seguintes:
+
+Key: Authorization
+
+Value: Bearer SEU_TOKEN_AQUI
+
+Exemplo: Criar uma Categoria
+
+POST /api/categories  (Lembre-se do Header Authorization)
+
+{
+  "name": "Faculdade"
+}
+
+
+Exemplo: Criar um Projeto
+
+POST /api/projects
+
+{
+  "title": "Trabalho de Conclusão",
   "categoryId": 1
 }
-```
 
-### 3. Criar uma Tarefa (Vinculada ao Projeto ID 1)
-**POST** `http://localhost:8080/api/tasks`
-```json
+
+Exemplo: Criar uma Tarefa
+
+POST /api/tasks
+
 {
-  "title": "Configurar Docker",
+  "title": "Escrever documentação",
   "projectId": 1
 }
-```
 
-### 4. Adicionar um Comentário (Vinculado à Tarefa ID 1)
-**POST** `http://localhost:8080/api/comments`
-```json
-{
-  "text": "Não esquecer de adicionar o volume no PostgreSQL",
-  "task": {
-    "id": 1
-  }
-}
-```
 
-### Outras Operações (Exemplos)
-* **Listar todos os projetos:** `GET http://localhost:8080/api/projects`
-* **Buscar tarefa específica:** `GET http://localhost:8080/api/tasks/1`
-* **Atualizar uma tarefa:** `PUT http://localhost:8080/api/tasks/1` *(Enviando o JSON de atualização no corpo)*
-* **Deletar uma categoria:** `DELETE http://localhost:8080/api/categories/1` *(Bloqueado caso existam projetos vinculados)*
+🏗️ Estrutura e Relacionamentos
 
-## 🏗️ Estrutura de Dados (Modelagem)
-* **Category:** Agrupa vários `Projects`.
-* **Project:** Pertence a uma `Category` e contém várias `Tasks`.
-* **Task:** Pertence a um `Project`, possui status de conclusão e pode conter vários `Comments`.
-* **Comment:** Associado diretamente a uma `Task`.
+User: Entidade principal de segurança. É o dono (owner) de todas as outras entidades.
+
+Category: Agrupa vários projetos temáticos.
+
+Project: Pertence a uma categoria e agrupa tarefas específicas.
+
+Task: Pertence a um projeto e possui um status booleano de conclusão (completed).
